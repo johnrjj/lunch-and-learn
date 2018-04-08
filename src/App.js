@@ -6,9 +6,10 @@ import "./App.css";
 import { colors, spacing, fontSizing } from "./theme";
 
 const BASE_ENDPOINT = 'https://api.gdax.com';
+
+// this will get us the bitcoin price in json format
 const getBitcoinPrice = async (pair = 'btc-usd') => {
   const fullEndpoint = `${BASE_ENDPOINT}/products/${pair}/ticker`;
-  console.log(fullEndpoint);
   const bitcoinPriceRaw = await fetch(fullEndpoint);
   const bitcoinPriceJson = await bitcoinPriceRaw.json();
   return bitcoinPriceJson;
@@ -83,7 +84,7 @@ class App extends Component {
     super(); // react-ism
     this.state = {
       price: null,
-      baseAmountValue: 2,
+      baseAmountValue: 1,
     };
   }
 
@@ -96,9 +97,8 @@ class App extends Component {
   }
 
   async updatePrice() {
-    const priceData = await getBitcoinPrice();
-    const price = priceData.price;
-    console.log(price);
+    const priceJson = await getBitcoinPrice();
+    const price = priceJson.price;
     if (!price) {
       return;
     }
